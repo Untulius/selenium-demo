@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
@@ -41,12 +42,25 @@ public class Lesson16 {
     @Test
     public void lesson16(){
         webDriver.get("https://savkk.github.io/selenium-practice/");
+        webDriver.findElement(By.id("button")).click();
+        webDriver.findElement(By.id("first")).click();
+
+        WebElement labelExcellent = webDriver.findElement(By.xpath("//label[.='Excellent!']"));
+        Assert.assertEquals(labelExcellent.getText(), "Excellent!");
+
+        WebElement button = webDriver.findElement(By.className("button-primary"));
+        Assert.assertEquals(button.getAttribute("value"), "Click me too!");
+        button.click();
+
+        WebElement link = webDriver.findElement(By.id("back"));
+        Assert.assertEquals(link.getText(), "Great! Return to menu");
+       // link.click();
 
 
     }
 
     @AfterMethod
     public void closeDriver(){
-        webDriver.quit();
+        //webDriver.quit();
     }
 }
