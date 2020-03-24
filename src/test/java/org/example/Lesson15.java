@@ -50,7 +50,7 @@ public class Lesson15 {
 
     @AfterMethod
     public void closeDriver() {
-        //webDriver.quit();
+        webDriver.quit();
     }
 
 }
