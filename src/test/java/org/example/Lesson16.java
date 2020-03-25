@@ -5,11 +5,15 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import java.util.concurrent.TimeUnit;
 
 /*
 На сайте https://savkk.github.io/selenium-practice/ в автотесте автоматизировать следующие действия:
@@ -21,27 +25,29 @@ menu” и нажать на неё.
 кнопку “GET RESULTS” под ними. Проверить, что появился текст, соответствующий атрибуту value
 из выделенных чек-боксов.
 4. На той же странице выбрать любую радио кнопку и нажать кнопку “GET RESULTS”, находящуюся
-под ними. Проверить, что появился текст, соответствующий значению атрибута value, выбеленной
+под ними. Проверить, что появился текст, соответствующий значению атрибута value, выделенной
 кнопки.
 5. Проверить, что появилась ссылка с текстом “Great! Return to menu” и нажать на неё.
 Инициализация и закрытие вебдравера при помощи фикстур.
  */
 public class Lesson16 {
+    private static final Logger LOG = LoggerFactory.getLogger(Lesson16.class);
     private WebDriver webDriver;
 
     @BeforeClass
-    public void downloadDriver(){
+    public void downloadDriver() {
         WebDriverManager.chromedriver().setup();
     }
 
     @BeforeMethod
-    public void initDriver(){
+    public void initDriver() {
         webDriver = new ChromeDriver();
     }
 
     @Test
-    public void lesson16(){
+    public void lesson16() {
         webDriver.get("https://savkk.github.io/selenium-practice/");
+        webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         webDriver.findElement(By.id("button")).click();
         webDriver.findElement(By.id("first")).click();
 
@@ -52,15 +58,31 @@ public class Lesson16 {
         Assert.assertEquals(button.getAttribute("value"), "Click me too!");
         button.click();
 
-        WebElement link = webDriver.findElement(By.id("back"));
+        WebElement link = webDriver.findElement(By.xpath("//a[.='Great! Return to menu']"));
         Assert.assertEquals(link.getText(), "Great! Return to menu");
-       // link.click();
+        link.click();
 
+        webDriver.findElement(By.id("checkbox")).click();
 
+        WebElement checkBoxOne = webDriver.findElement(By.id("one"));
+        checkBoxOne.click();
+        webDriver.findElement(By.id("go")).click();
+        WebElement labelResult = webDriver.findElement(By.id("result"));
+        Assert.assertEquals(labelResult.getText(), checkBoxOne.getAttribute("value"));
+
+        WebElement radioBoxThree = webDriver.findElement(By.id("radio_three"));
+        radioBoxThree.click();
+        webDriver.findElement(By.id("radio_go")).click();
+        WebElement labelRadioResult = webDriver.findElement(By.id("radio_result"));
+        Assert.assertEquals(labelRadioResult.getText(), radioBoxThree.getAttribute("value"));
+
+        WebElement linkReturn = webDriver.findElement(By.xpath("//a[.='Great! Return to menu']"));
+        Assert.assertEquals(linkReturn.getText(), "Great! Return to menu");
+        linkReturn.click();
     }
 
     @AfterMethod
-    public void closeDriver(){
-        //webDriver.quit();
+    public void closeDriver() {
+        webDriver.quit();
     }
 }

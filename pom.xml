@@ -15,6 +15,7 @@
         <selenium-java.version>3.141.59</selenium-java.version>
         <testng.version>7.1.0</testng.version>
         <webdrivermanager.version>3.8.0</webdrivermanager.version>
+        <slf4j-log4j12.version>1.7.30</slf4j-log4j12.version>
     </properties>
 
     <dependencies>
@@ -34,6 +35,12 @@
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>webdrivermanager</artifactId>
             <version>${webdrivermanager.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${slf4j-log4j12.version}</version>
         </dependency>
     </dependencies>
 
