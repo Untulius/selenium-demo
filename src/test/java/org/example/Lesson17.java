@@ -47,7 +47,7 @@ public class Lesson17 {
     public void lesson17() {
         webDriver.get("https://savkk.github.io/selenium-practice/");
         webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-        /*
+
         //Lesson16:
         webDriver.findElement(By.id("button")).click();
         webDriver.findElement(By.id("first")).click();
@@ -84,7 +84,7 @@ public class Lesson17 {
 
         //Lesson17:
         webDriver.findElement(By.id("select")).click();
-        WebElement heroElement  = webDriver.findElement(By.name("hero"));
+        WebElement heroElement = webDriver.findElement(By.name("hero"));
         Select heroSelect = new Select(heroElement);
         heroSelect.selectByVisibleText("Frederick Phillips Brooks, Jr.");
 
@@ -115,12 +115,13 @@ public class Lesson17 {
 
         webDriver.findElement(By.tagName("textarea")).sendKeys("London is the capital of Great Britain");
 
-        //webDriver.findElement(By.xpath("//input[@type='file']")).click();
-        //выбрать файл
+        webDriver.findElement(By.xpath("//input[@type='file']")).sendKeys("C:\\tmp/HelloWorld.txt");
 
         webDriver.findElement(By.xpath("//input[@type='submit']")).click();
-        //4. Проверить, что появилась ссылка с текстом “Great! Return to menu” и нажать на неё.
-*/
+        WebElement linkReturnFromForm = webDriver.findElement(By.xpath("//a[.='Great! Return to menu']"));
+        Assert.assertEquals(linkReturnFromForm.getText(), "Great! Return to menu");
+        linkReturnFromForm.click();
+
         webDriver.findElement(By.id("iframe")).click();
         webDriver.switchTo().frame("code-frame");
         String codeText = webDriver.findElement(By.id("code")).getText().substring(14);
@@ -131,15 +132,14 @@ public class Lesson17 {
         WebElement linkReturnFromIFrame = webDriver.findElement(By.xpath("//a[.='Great! Return to menu']"));
         Assert.assertEquals(linkReturnFromIFrame.getText(), "Great! Return to menu");
         linkReturnFromIFrame.click();
-
     }
 
     @AfterMethod
     public void closeDriver() {
-        //webDriver.quit();
+        webDriver.quit();
     }
 
-    public void fillField(String fieldTitle, String inputText){
+    public void fillField(String fieldTitle, String inputText) {
         WebElement input = webDriver.findElement(By.xpath("//label[.='" + fieldTitle + "']/following-sibling::input"));
         input.sendKeys(inputText);
     }
