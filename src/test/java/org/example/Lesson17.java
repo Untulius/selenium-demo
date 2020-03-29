@@ -14,6 +14,11 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 
 /*
@@ -44,7 +49,7 @@ public class Lesson17 {
     }
 
     @Test
-    public void lesson17() {
+    public void lesson17() throws IOException {
         webDriver.get("https://savkk.github.io/selenium-practice/");
         webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 
@@ -115,7 +120,9 @@ public class Lesson17 {
 
         webDriver.findElement(By.tagName("textarea")).sendKeys("London is the capital of Great Britain");
 
-        webDriver.findElement(By.xpath("//input[@type='file']")).sendKeys("C:\\tmp/HelloWorld.txt");
+        Path testFile1 = Files.createFile(Paths.get("src\\HelloWorld.txt"));
+        webDriver.findElement(By.xpath("//input[@type='file']")).sendKeys(testFile1.toAbsolutePath().toString());
+        Files.delete(testFile1);
 
         webDriver.findElement(By.xpath("//input[@type='submit']")).click();
         WebElement linkReturnFromForm = webDriver.findElement(By.xpath("//a[.='Great! Return to menu']"));
