@@ -1,6 +1,7 @@
 package org.example;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -14,7 +15,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -22,19 +22,17 @@ import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 
 /*
-Добавить действия в тест из задания к занятию 16:
-1. На странице “Select” выбрать одно значение в выпадающем списка и несколько в
-списке, поддерживающем множественный выбор.
-2. Нажать на кнопку “GET RESULT”. Проверить, что на странице отобразились выбранные
-значения и ссылка с текстом “Great! Return to menu” и нажать на неё.
-3. На странице “Form” заполнить все обязательные поля и нажать на кнопку
-«ОТПРАВИТЬ».
-4. Проверить, что появилась ссылка с текстом “Great! Return to menu” и нажать на неё.
-5. На странице “IFrame” ввести код, выведенный на этой странице, в поле ввода и нажать
-на кнопку «VERIFY».
-6. Проверить, что появилась ссылка с текстом “Great! Return to menu” и нажать на неё.
+Добавить дополнительные тесты к тестам из задания 17.
+1. На странице “Prompt, Alert and Confirm” получить, а затем ввести
+полученный пароль в диалоговое окно ввода. Проверить, что после
+успешного ввода пароля появляется сообщение «Great!» и кнопка «Return
+to Menu». Перейти на главную страницу нажав на кнопку “Return to Menu”.
+2. Написать негативный тест на первое задание.
+3. На странице Table удалить и добавить несколько записей в таблицу.
+Проверить, что после выполнения этих действий появляется кнопка “Return
+to Menu”. Перейти на главную страницу нажав на кнопку “Return to Menu”.
  */
-public class Lesson17 {
+public class Lesson18 {
     private static final Logger LOG = LoggerFactory.getLogger(Lesson16.class);
     private WebDriver webDriver;
 
@@ -49,10 +47,32 @@ public class Lesson17 {
     }
 
     @Test
-    public void lesson17() throws IOException {
+    public void lesson18() {
         webDriver.get("https://savkk.github.io/selenium-practice/");
         webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 
+        webDriver.findElement(By.id("alerts")).click();
+        webDriver.findElement(By.xpath("//button[.='Get password']")).click();
+        Alert alert = webDriver.switchTo().alert();
+        String alertText = alert.getText();
+        String password = alertText.substring(alertText.lastIndexOf(" ") + 1);
+        alert.accept();
+        webDriver.findElement(By.xpath("//button[.='Enter password']")).click();
+        Alert prompt = webDriver.switchTo().alert();
+        prompt.sendKeys(password);
+        prompt.accept();
+
+        Assert.assertEquals(webDriver.findElement(By.xpath("//label[.='Great!']")).getText(), "Great!");
+        Assert.assertTrue(webDriver.findElement(By.xpath("//button[.='Return to menu']")).isDisplayed());
+        webDriver.findElement(By.xpath("//button[.='Return to menu']")).click();
+        Alert confirm = webDriver.switchTo().alert();
+        confirm.accept();
+
+        //2. Написать негативный тест на первое задание.
+
+        webDriver.findElement(By.id("table")).click();
+
+/*
         //Lesson16:
         webDriver.findElement(By.id("button")).click();
         webDriver.findElement(By.id("first")).click();
@@ -131,20 +151,20 @@ public class Lesson17 {
 
         webDriver.findElement(By.id("iframe")).click();
         webDriver.switchTo().frame("code-frame");
-        String codeText = webDriver.findElement(By.id("code")).getText();
-        String code = codeText.substring(codeText.lastIndexOf(" ") + 1);
+        String codeText = webDriver.findElement(By.id("code")).getText().substring(14);
         webDriver.switchTo().defaultContent();
-        webDriver.findElement(By.name("code")).sendKeys(code);
+        webDriver.findElement(By.name("code")).sendKeys(codeText);
         webDriver.findElement(By.name("ok")).click();
 
         WebElement linkReturnFromIFrame = webDriver.findElement(By.xpath("//a[.='Great! Return to menu']"));
         Assert.assertEquals(linkReturnFromIFrame.getText(), "Great! Return to menu");
         linkReturnFromIFrame.click();
+ */
     }
 
     @AfterMethod
     public void closeDriver() {
-        webDriver.quit();
+        //webDriver.quit();
     }
 
     public void fillField(String fieldTitle, String inputText) {
