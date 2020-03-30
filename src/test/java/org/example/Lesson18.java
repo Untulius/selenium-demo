@@ -41,7 +41,7 @@ public class Lesson18 {
     @Test
     public void lesson18() {
         webDriver.get("https://savkk.github.io/selenium-practice/");
-        webDriver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+        webDriver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
 
         webDriver.findElement(By.id("alerts")).click();
         webDriver.findElement(By.xpath("//button[.='Get password']")).click();

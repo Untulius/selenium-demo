@@ -1,9 +1,7 @@
 package org.example;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.slf4j.Logger;
@@ -21,19 +19,12 @@ import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 
 /*
-Добавить действия в тест из задания к занятию 16:
-1. На странице “Select” выбрать одно значение в выпадающем списка и несколько в
-списке, поддерживающем множественный выбор.
-2. Нажать на кнопку “GET RESULT”. Проверить, что на странице отобразились выбранные
-значения и ссылка с текстом “Great! Return to menu” и нажать на неё.
-3. На странице “Form” заполнить все обязательные поля и нажать на кнопку
-«ОТПРАВИТЬ».
-4. Проверить, что появилась ссылка с текстом “Great! Return to menu” и нажать на неё.
-5. На странице “IFrame” ввести код, выведенный на этой странице, в поле ввода и нажать
-на кнопку «VERIFY».
-6. Проверить, что появилась ссылка с текстом “Great! Return to menu” и нажать на неё.
+Добавить дополнительные автотесты к тестам из предыдущих заданий.
+1. Дополнить все ранее написанные тесты, проверкой, что после
+правильного выполнения каждого задания в cookie появляется запись с
+названием – ‘button’, ‘alerts’, ‘table’ и т.п. и значением ‘done’.
  */
-public class Lesson17 {
+public class Lesson19 {
     private static final Logger LOG = LoggerFactory.getLogger(Lesson16.class);
     private WebDriver webDriver;
 
@@ -48,9 +39,9 @@ public class Lesson17 {
     }
 
     @Test
-    public void lesson17() throws IOException {
+    public void lesson19() throws IOException {
         webDriver.get("https://savkk.github.io/selenium-practice/");
-        webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        webDriver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
 
         //Lesson16:
         webDriver.findElement(By.id("button")).click();
@@ -139,6 +130,52 @@ public class Lesson17 {
         WebElement linkReturnFromIFrame = webDriver.findElement(By.xpath("//a[.='Great! Return to menu']"));
         Assert.assertEquals(linkReturnFromIFrame.getText(), "Great! Return to menu");
         linkReturnFromIFrame.click();
+
+        //Lesson18:
+        webDriver.findElement(By.id("alerts")).click();
+        webDriver.findElement(By.xpath("//button[.='Get password']")).click();
+        Alert alert = webDriver.switchTo().alert();
+        String alertText = alert.getText();
+        String password = alertText.substring(alertText.lastIndexOf(" ") + 1);
+        alert.accept();
+        webDriver.findElement(By.xpath("//button[.='Enter password']")).click();
+        Alert prompt = webDriver.switchTo().alert();
+        prompt.sendKeys(password);
+        prompt.accept();
+
+        Assert.assertEquals(webDriver.findElement(By.xpath("//label[.='Great!']")).getText(), "Great!");
+        Assert.assertTrue(webDriver.findElement(By.xpath("//button[.='Return to menu']")).isDisplayed());
+        webDriver.findElement(By.xpath("//button[.='Return to menu']")).click();
+        Alert confirm = webDriver.switchTo().alert();
+        confirm.accept();
+
+        webDriver.findElement(By.id("alerts")).click();
+        webDriver.findElement(By.xpath("//button[.='Get password']")).click();
+        Alert alertNegativeTest = webDriver.switchTo().alert();
+        alertNegativeTest.accept();
+        webDriver.findElement(By.xpath("//button[.='Enter password']")).click();
+        Alert promptNegativeTest = webDriver.switchTo().alert();
+        promptNegativeTest.sendKeys("noValidPassword1234");
+        promptNegativeTest.accept();
+
+        Assert.assertFalse(isElementPresent("//label[.='Great!']"));
+        Assert.assertFalse(isElementPresent("//button[.='Return to menu']"));
+
+        webDriver.navigate().back();
+        webDriver.findElement(By.id("table")).click();
+        webDriver.findElement(By.xpath("//table/tbody/tr[3]/td/input")).click();
+        webDriver.findElement(By.xpath("//input[@value='Delete']")).click();
+        fillField("Company", "Yandex");
+        fillField("Contact", "Moscow");
+        fillField("Country", "Russia");
+        webDriver.findElement(By.xpath("//input[@value='Add']")).click();
+        fillField("Company", "Google");
+        fillField("Contact", "Moscow");
+        fillField("Country", "1600 Amphitheatre Parkway, Mountain View, CA 94043");
+        webDriver.findElement(By.xpath("//input[@value='Add']")).click();
+        WebElement linkReturnFromTable = webDriver.findElement(By.xpath("//a[.='Great! Return to menu']"));
+        Assert.assertEquals(linkReturnFromTable.getText(), "Great! Return to menu");
+        linkReturnFromTable.click();
     }
 
     @AfterMethod
@@ -149,6 +186,15 @@ public class Lesson17 {
     public void fillField(String fieldTitle, String inputText) {
         WebElement input = webDriver.findElement(By.xpath("//label[.='" + fieldTitle + "']/following-sibling::input"));
         input.sendKeys(inputText);
+    }
+
+    public boolean isElementPresent(String locator) {
+        try {
+            webDriver.findElement(By.xpath(locator));
+            return true;
+        } catch (NoSuchElementException e) {
+            return false;
+        }
     }
 
 }
