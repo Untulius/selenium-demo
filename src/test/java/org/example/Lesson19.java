@@ -1,5 +1,6 @@
 package org.example;
 
+import com.sun.media.jfxmediaimpl.HostUtils;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -46,78 +47,75 @@ public class Lesson19 {
         //Lesson16:
         webDriver.findElement(By.id("button")).click();
         webDriver.findElement(By.id("first")).click();
-
         WebElement labelExcellent = webDriver.findElement(By.xpath("//label[.='Excellent!']"));
         Assert.assertEquals(labelExcellent.getText(), "Excellent!");
-
         WebElement button = webDriver.findElement(By.className("button-primary"));
         Assert.assertEquals(button.getAttribute("value"), "Click me too!");
         button.click();
-
         WebElement link = webDriver.findElement(By.xpath("//a[.='Great! Return to menu']"));
         Assert.assertEquals(link.getText(), "Great! Return to menu");
         link.click();
 
-        webDriver.findElement(By.id("checkbox")).click();
+        Cookie buttonCookie = webDriver.manage().getCookieNamed("button");
+        Assert.assertEquals(buttonCookie.getValue(), "done");
 
+        webDriver.findElement(By.id("checkbox")).click();
         WebElement checkBoxOne = webDriver.findElement(By.id("one"));
         checkBoxOne.click();
         webDriver.findElement(By.id("go")).click();
         WebElement labelResult = webDriver.findElement(By.id("result"));
         Assert.assertEquals(labelResult.getText(), checkBoxOne.getAttribute("value"));
-
         WebElement radioBoxThree = webDriver.findElement(By.id("radio_three"));
         radioBoxThree.click();
         webDriver.findElement(By.id("radio_go")).click();
         WebElement labelRadioResult = webDriver.findElement(By.id("radio_result"));
         Assert.assertEquals(labelRadioResult.getText(), radioBoxThree.getAttribute("value"));
-
         WebElement linkReturn = webDriver.findElement(By.xpath("//a[.='Great! Return to menu']"));
         Assert.assertEquals(linkReturn.getText(), "Great! Return to menu");
         linkReturn.click();
 
+        Cookie checkboxesCookie = webDriver.manage().getCookieNamed("checkboxes");
+        Assert.assertEquals(checkboxesCookie.getValue(), "done");
 
         //Lesson17:
         webDriver.findElement(By.id("select")).click();
         WebElement heroElement = webDriver.findElement(By.name("hero"));
         Select heroSelect = new Select(heroElement);
         heroSelect.selectByVisibleText("Frederick Phillips Brooks, Jr.");
-
         WebElement languagesElement = webDriver.findElement(By.name("languages"));
         Select languagesSelect = new Select(languagesElement);
         languagesSelect.selectByValue("Java");
         languagesSelect.selectByValue("C++");
         languagesSelect.selectByValue("Pascal");
-
         webDriver.findElement(By.id("go")).click();
         WebElement languagesResult = webDriver.findElement(By.xpath("//select[@name='hero']/following-sibling::label"));
         Assert.assertEquals(languagesResult.getText(), "Frederick Phillips Brooks, Jr.");
-
         WebElement heroResult = webDriver.findElement(By.xpath("//select[@name='languages']/following-sibling::label"));
         Assert.assertEquals(heroResult.getText(), "Java, C++, Pascal");
-
         WebElement linkReturnFromSelect = webDriver.findElement(By.xpath("//a[.='Great! Return to menu']"));
         Assert.assertEquals(linkReturnFromSelect.getText(), "Great! Return to menu");
         linkReturnFromSelect.click();
+
+        Cookie selectCookie = webDriver.manage().getCookieNamed("select");
+        Assert.assertEquals(selectCookie.getValue(), "done");
 
         webDriver.findElement(By.id("form")).click();
         fillField("First Name:", "Ivan");
         fillField("Last Name:", "Petrov");
         fillField("Email:", "ivan.petrov@yandex.ru");
         fillField("Address:", "Moscow, The Red Square, 1");
-
         webDriver.findElement(By.xpath("//input[@name='sex']")).click();
-
         webDriver.findElement(By.tagName("textarea")).sendKeys("London is the capital of Great Britain");
-
         Path testFile1 = Files.createFile(Paths.get("src\\HelloWorld.txt"));
         webDriver.findElement(By.xpath("//input[@type='file']")).sendKeys(testFile1.toAbsolutePath().toString());
         Files.delete(testFile1);
-
         webDriver.findElement(By.xpath("//input[@type='submit']")).click();
         WebElement linkReturnFromForm = webDriver.findElement(By.xpath("//a[.='Great! Return to menu']"));
         Assert.assertEquals(linkReturnFromForm.getText(), "Great! Return to menu");
         linkReturnFromForm.click();
+
+        Cookie formCookie = webDriver.manage().getCookieNamed("form");
+        Assert.assertEquals(formCookie.getValue(), "done");
 
         webDriver.findElement(By.id("iframe")).click();
         webDriver.switchTo().frame("code-frame");
@@ -126,10 +124,12 @@ public class Lesson19 {
         webDriver.switchTo().defaultContent();
         webDriver.findElement(By.name("code")).sendKeys(code);
         webDriver.findElement(By.name("ok")).click();
-
         WebElement linkReturnFromIFrame = webDriver.findElement(By.xpath("//a[.='Great! Return to menu']"));
         Assert.assertEquals(linkReturnFromIFrame.getText(), "Great! Return to menu");
         linkReturnFromIFrame.click();
+
+        Cookie iframeCookie = webDriver.manage().getCookieNamed("iframe");
+        Assert.assertEquals(iframeCookie.getValue(), "done");
 
         //Lesson18:
         webDriver.findElement(By.id("alerts")).click();
@@ -142,12 +142,14 @@ public class Lesson19 {
         Alert prompt = webDriver.switchTo().alert();
         prompt.sendKeys(password);
         prompt.accept();
-
         Assert.assertEquals(webDriver.findElement(By.xpath("//label[.='Great!']")).getText(), "Great!");
         Assert.assertTrue(webDriver.findElement(By.xpath("//button[.='Return to menu']")).isDisplayed());
         webDriver.findElement(By.xpath("//button[.='Return to menu']")).click();
         Alert confirm = webDriver.switchTo().alert();
         confirm.accept();
+
+        Cookie alertsCookie = webDriver.manage().getCookieNamed("alerts");
+        Assert.assertEquals(alertsCookie.getValue(), "done");
 
         webDriver.findElement(By.id("alerts")).click();
         webDriver.findElement(By.xpath("//button[.='Get password']")).click();
@@ -157,7 +159,6 @@ public class Lesson19 {
         Alert promptNegativeTest = webDriver.switchTo().alert();
         promptNegativeTest.sendKeys("noValidPassword1234");
         promptNegativeTest.accept();
-
         Assert.assertFalse(isElementPresent("//label[.='Great!']"));
         Assert.assertFalse(isElementPresent("//button[.='Return to menu']"));
 
@@ -176,6 +177,9 @@ public class Lesson19 {
         WebElement linkReturnFromTable = webDriver.findElement(By.xpath("//a[.='Great! Return to menu']"));
         Assert.assertEquals(linkReturnFromTable.getText(), "Great! Return to menu");
         linkReturnFromTable.click();
+
+        Cookie tableCookie = webDriver.manage().getCookieNamed("table");
+        Assert.assertEquals(tableCookie.getValue(), "done");
     }
 
     @AfterMethod
