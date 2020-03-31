@@ -1,12 +1,9 @@
 package org.example;
 
-import com.sun.media.jfxmediaimpl.HostUtils;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -26,7 +23,6 @@ import java.util.concurrent.TimeUnit;
 названием – ‘button’, ‘alerts’, ‘table’ и т.п. и значением ‘done’.
  */
 public class Lesson19 {
-    private static final Logger LOG = LoggerFactory.getLogger(Lesson16.class);
     private WebDriver webDriver;
 
     @BeforeClass
