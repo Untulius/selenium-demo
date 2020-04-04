@@ -2,24 +2,24 @@ package org.example;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 
 public class LoginPage {
     private final WebDriver webDriver;
+    private By userNameField = By.name("username");
+    private By passwordField = By.name("password");
+    private By enterButton = By.xpath("//button[.='Войти']");
 
     public  LoginPage(WebDriver webDriver) {
         this.webDriver = webDriver;
     }
 
     public void login(String login, String pass){
-        WebElement username =  webDriver.findElement(By.name("username"));
-        username.clear();
-        username.sendKeys(login);
+        webDriver.findElement(userNameField).clear();
+        webDriver.findElement(userNameField).sendKeys(login);
 
-        WebElement password =  webDriver.findElement(By.name("password"));
-        password.clear();
-        password.sendKeys(pass);
+        webDriver.findElement(passwordField).clear();
+        webDriver.findElement(passwordField).sendKeys(pass);
 
-        webDriver.findElement(By.xpath("//button[.='Войти']")).click();
+        webDriver.findElement(enterButton).click();
     }
 }
