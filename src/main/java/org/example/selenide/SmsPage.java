@@ -1,27 +1,18 @@
 package org.example.selenide;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
+import com.codeborne.selenide.SelenideElement;
+import org.openqa.selenium.By;
+
+import static com.codeborne.selenide.Selenide.$;
 
 public class SmsPage {
-    private final WebDriver webDriver;
 
-    @FindBy(name = "otpCode")
-    private WebElement codeField;
-
-    @FindBy(id = "login-otp-button")
-    private WebElement loginButton;
-
-    public SmsPage(WebDriver webDriver) {
-        this.webDriver = webDriver;
-        PageFactory.initElements(webDriver, this);
-    }
+    private SelenideElement codeField = $(By.name("otpCode"));
+    private SelenideElement loginButton = $(By.id("login-otp-button"));
 
     public TopMenu enterCode(String code) {
-        codeField.sendKeys(code);
+        codeField.setValue(code);
         loginButton.click();
-        return new TopMenu(webDriver);
+        return new TopMenu();
     }
 }

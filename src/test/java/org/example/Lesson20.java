@@ -39,7 +39,7 @@ public class Lesson20 {
         webDriver = new ChromeDriver();
         webDriver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
         webDriver.manage().window().maximize();
-        webDriver.get("https://idemo.bspb.ru:");
+        webDriver.get("https://idemo.bspb.ru");
     }
 
     @Test

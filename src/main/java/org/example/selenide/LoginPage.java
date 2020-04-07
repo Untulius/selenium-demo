@@ -1,36 +1,20 @@
 package org.example.selenide;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
+import com.codeborne.selenide.SelenideElement;
+import org.openqa.selenium.By;
+
+import static com.codeborne.selenide.Selenide.$;
 
 public class LoginPage {
-    private final WebDriver webDriver;
 
-    @FindBy(name = "username")
-    private WebElement userNameField;
-
-    @FindBy(name = "password")
-    private WebElement passwordField;
-
-    @FindBy(xpath = "//button[.='Войти']")
-    private WebElement enterButton;
-
-    public LoginPage(WebDriver webDriver) {
-        this.webDriver = webDriver;
-        PageFactory.initElements(webDriver, this);
-    }
+    private SelenideElement userNameField = $(By.name("username"));
+    private SelenideElement passwordField = $(By.name("password"));
+    private SelenideElement enterButton = $(By.xpath("//button[.='Войти']"));
 
     public SmsPage login(String login, String pass) {
-        userNameField.clear();
-        userNameField.sendKeys(login);
-
-        passwordField.clear();
-        passwordField.sendKeys(pass);
-
+        userNameField.setValue(login);
+        passwordField.setValue(pass);
         enterButton.click();
-
-        return new SmsPage(webDriver);
+        return new SmsPage();
     }
 }

@@ -1,46 +1,30 @@
 package org.example.selenide;
 
-import org.example.pagefactory.BasePagePF;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
+import com.codeborne.selenide.SelenideElement;
+import org.openqa.selenium.By;
 
-import java.time.Duration;
+import static com.codeborne.selenide.Selenide.$;
 
-public class OverviewPage extends BasePage {
+public class OverviewPage {
 
-    @FindBy(xpath = "//span[@class='amount']")
-    private WebElement amountField;
-
-    @FindBy(xpath = "//div[@id='header-container']//span[@class='text']")
-    private WebElement finfreedom;
-
-    @FindBy(xpath = "//div[@id='header-container']//span[@class='amount']")
-    private WebElement amount;
-
-    @FindBy(xpath = "//div[@id='header-container']//small[@class='my-assets'][contains(text(),'Моих')]")
-    private WebElement myAssets;
-
-    public OverviewPage(WebDriver webDriver) {
-        super(webDriver);
-    }
+    private SelenideElement amountField = $(By.xpath("//span[@class='amount']"));
+    private SelenideElement finfreedom = $(By.xpath("//div[@id='header-container']//span[@class='text']"));
+    private SelenideElement amount = $(By.xpath("//div[@id='header-container']//span[@class='amount']"));
+    private SelenideElement myAssets = $(By.xpath("//div[@id='header-container']//small[@class='my-assets'][contains(text(),'Моих')]"));
 
     public void moveCursor() {
-        Actions actions = new Actions(webDriver);
-        actions.moveToElement(amountField).pause(Duration.ofSeconds(5)).build().perform();
+        amountField.hover();
     }
 
-    public WebElement getFinfreedom() {
+    public SelenideElement getFinfreedom() {
         return finfreedom;
     }
 
-    public WebElement getAmount() {
+    public SelenideElement getAmount() {
         return amount;
     }
 
-    public WebElement getMyAssets() {
+    public SelenideElement getMyAssets() {
         return myAssets;
     }
 }
