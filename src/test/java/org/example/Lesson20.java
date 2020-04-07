@@ -3,11 +3,14 @@ package org.example;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
 import java.util.concurrent.TimeUnit;
 
 /*
@@ -46,6 +49,9 @@ public class Lesson20 {
         WebElement smsForm = webDriver.findElement(By.id("login-form"));
         Assert.assertTrue(smsForm.isEnabled());
 
+
+        WebDriverWait webDriverWait = new WebDriverWait(webDriver, 30);
+        webDriverWait.until(ExpectedConditions.visibilityOf(smsForm));
         SmsPage smsPage = new SmsPage(webDriver);
         smsPage.enterCode("0000");
         Assert.assertEquals(webDriver.getCurrentUrl(), "https://idemo.bspb.ru/welcome");
@@ -54,15 +60,16 @@ public class Lesson20 {
         overviewPage.getTopMenu().selectTopMenu("overview");
 
         Assert.assertTrue(webDriver.getTitle().contains("Обзор"));
-        WebElement finfreedom = webDriver.findElement(By.xpath("//div[@id='header-container']//span[@class='text']"));
-        Assert.assertEquals(finfreedom.getText(), "Финансовая свобода");
+        Assert.assertEquals(overviewPage.getFinfreedom().getText(), "Финансовая свобода");
 
-        WebElement amount = webDriver.findElement(By.xpath("//div[@id='header-container']//span[@class='amount']"));
-        Assert.assertTrue(amount.isDisplayed());
+        String amountMoney = overviewPage.getAmount().getText();
+        Assert.assertTrue(amountMoney.matches("\\d{0,3}\\s\\d{0,3}\\s\\d{1,3}\\.\\d{2}\\s."));
 
-        WebElement myAssets = webDriver.findElement(By.xpath("//div[@id='header-container']//small[@class='my-assets']/br"));
         overviewPage.moveCursor();
-        Assert.assertTrue(myAssets.isEnabled());
+        String myAssets = overviewPage.getMyAssets().getText();
+        Assert.assertTrue(myAssets.contains("Моих средств"));
+        String amountMyAssets = myAssets.replaceAll("Моих средств ", "");
+        Assert.assertTrue(amountMyAssets.matches("\\d{0,3}\\s\\d{0,3}\\s\\d{1,3}\\.\\d{2}\\s."));
     }
 
     @AfterMethod

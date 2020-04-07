@@ -9,6 +9,9 @@ import java.time.Duration;
 
 public class OverviewPage extends BasePage {
     private By amountField = By.xpath("//span[@class='amount']");
+    private By finfreedom = By.xpath("//div[@id='header-container']//span[@class='text']");
+    private By amount = By.xpath("//div[@id='header-container']//span[@class='amount']");
+    private By myAssets = By.xpath("//div[@id='header-container']//small[@class='my-assets'][contains(text(),'Моих')]");
 
     public OverviewPage(WebDriver webDriver) {
         super(webDriver);
@@ -18,5 +21,17 @@ public class OverviewPage extends BasePage {
         Actions actions = new Actions(webDriver);
         WebElement amount = webDriver.findElement(amountField);
         actions.moveToElement(amount).pause(Duration.ofSeconds(5)).build().perform();
+    }
+
+    public WebElement getFinfreedom() {
+        return webDriver.findElement(finfreedom);
+    }
+
+    public WebElement getAmount() {
+        return webDriver.findElement(amount);
+    }
+
+    public WebElement getMyAssets() {
+        return webDriver.findElement(myAssets);
     }
 }
