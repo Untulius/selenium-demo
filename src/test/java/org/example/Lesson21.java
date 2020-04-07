@@ -46,11 +46,9 @@ public class Lesson21 {
         OverviewPagePF overviewPagePF = new OverviewPagePF(webDriver);
         Assert.assertEquals(overviewPagePF.getFinfreedom().getText(), "Финансовая свобода");
 
-
         String amountMoney = overviewPagePF.getAmount().getText();
         Assert.assertTrue(amountMoney.matches("\\d{0,3}\\s\\d{0,3}\\s\\d{1,3}\\.\\d{2}\\s."));
 
-        overviewPagePF.moveCursor();
         String myAssets = overviewPagePF.getMyAssets().getText();
         Assert.assertTrue(myAssets.contains("Моих средств"));
         String amountMyAssets = myAssets.replaceAll("Моих средств ", "");
