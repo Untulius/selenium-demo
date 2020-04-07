@@ -2,9 +2,8 @@ package org.example;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.example.pagefactory.LoginPagePF;
-import org.openqa.selenium.By;
+import org.example.pagefactory.OverviewPagePF;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -44,14 +43,18 @@ public class Lesson21 {
                 .moveCursor();
 
         Assert.assertTrue(webDriver.getTitle().contains("Обзор"));
-        WebElement finfreedom = webDriver.findElement(By.xpath("//div[@id='header-container']//span[@class='text']"));
-        Assert.assertEquals(finfreedom.getText(), "Финансовая свобода");
+        OverviewPagePF overviewPagePF = new OverviewPagePF(webDriver);
+        Assert.assertEquals(overviewPagePF.getFinfreedom().getText(), "Финансовая свобода");
 
-        WebElement amount = webDriver.findElement(By.xpath("//div[@id='header-container']//span[@class='amount']"));
-        Assert.assertTrue(amount.isDisplayed());
 
-        WebElement myAssets = webDriver.findElement(By.xpath("//div[@id='header-container']//small[@class='my-assets']/br"));
-        Assert.assertTrue(myAssets.isEnabled());
+        String amountMoney = overviewPagePF.getAmount().getText();
+        Assert.assertTrue(amountMoney.matches("\\d{0,3}\\s\\d{0,3}\\s\\d{1,3}\\.\\d{2}\\s."));
+
+        overviewPagePF.moveCursor();
+        String myAssets = overviewPagePF.getMyAssets().getText();
+        Assert.assertTrue(myAssets.contains("Моих средств"));
+        String amountMyAssets = myAssets.replaceAll("Моих средств ", "");
+        Assert.assertTrue(amountMyAssets.matches("\\d{0,3}\\s\\d{0,3}\\s\\d{1,3}\\.\\d{2}\\s."));
     }
 
     @AfterMethod

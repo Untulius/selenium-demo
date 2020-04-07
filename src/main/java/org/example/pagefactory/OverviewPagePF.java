@@ -12,6 +12,15 @@ public class OverviewPagePF extends BasePagePF {
     @FindBy(xpath = "//span[@class='amount']")
     private WebElement amountField;
 
+    @FindBy(xpath = "//div[@id='header-container']//span[@class='text']")
+    private WebElement finfreedom;
+
+    @FindBy(xpath = "//div[@id='header-container']//span[@class='amount']")
+    private WebElement amount;
+
+    @FindBy(xpath = "//div[@id='header-container']//small[@class='my-assets'][contains(text(),'Моих')]")
+    private WebElement myAssets;
+
     public OverviewPagePF(WebDriver webDriver) {
         super(webDriver);
     }
@@ -19,5 +28,17 @@ public class OverviewPagePF extends BasePagePF {
     public void moveCursor() {
         Actions actions = new Actions(webDriver);
         actions.moveToElement(amountField).pause(Duration.ofSeconds(5)).build().perform();
+    }
+
+    public WebElement getFinfreedom() {
+        return finfreedom;
+    }
+
+    public WebElement getAmount() {
+        return amount;
+    }
+
+    public WebElement getMyAssets() {
+        return myAssets;
     }
 }
