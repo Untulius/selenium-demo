@@ -42,7 +42,7 @@ public class Lesson15 {
         WebElement button = webDriver.findElement(By.className("search2__button"));
         button.click();
 
-        String inputText = webDriver.findElement(By.id("uniq15840358076711")).getAttribute("value");
+        String inputText = webDriver.findElement(By.xpath("//span/input[@name='text']")).getAttribute("value");
         Assert.assertEquals(inputText, "hello world");
 
         Assert.assertTrue(webDriver.getTitle().contains("hello world"));
