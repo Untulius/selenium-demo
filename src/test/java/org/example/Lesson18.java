@@ -11,6 +11,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /*
@@ -76,19 +77,34 @@ public class Lesson18 {
         //3.
         webDriver.navigate().back();
         webDriver.findElement(By.id("table")).click();
-        webDriver.findElement(By.xpath("//table/tbody/tr[3]/td/input")).click();
-        webDriver.findElement(By.xpath("//input[@value='Delete']")).click();
-        fillField("Company", "Yandex");
-        fillField("Contact", "Moscow");
-        fillField("Country", "Russia");
-        webDriver.findElement(By.xpath("//input[@value='Add']")).click();
-        fillField("Company", "Google");
-        fillField("Contact", "Moscow");
-        fillField("Country", "1600 Amphitheatre Parkway, Mountain View, CA 94043");
-        webDriver.findElement(By.xpath("//input[@value='Add']")).click();
+        deleteRow(5);
+        deleteRow(3);
+        deleteRow(1);
+
+        addRow("Yandex", "Moscow", "Russia");
+        addRow("Google", "Mountain View", "1600 Amphitheatre Parkway, Mountain View, CA 94043");
+
         WebElement linkReturnFromTable = webDriver.findElement(By.xpath("//a[.='Great! Return to menu']"));
         Assert.assertEquals(linkReturnFromTable.getText(), "Great! Return to menu");
         linkReturnFromTable.click();
+    }
+
+    public void deleteRow(int id) {
+        List<WebElement> checkbox = webDriver.findElements(By.xpath("//input[@type = 'checkbox'] "));
+        checkbox.get(id).click();
+        webDriver.findElement(By.xpath("//input[@value='Delete']")).click();
+    }
+
+    public void addRow(String company, String contact, String country) {
+        fillField("Company", company);
+        fillField("Contact", contact);
+        fillField("Country", country);
+        webDriver.findElement(By.xpath("//input[@value='Add']")).click();
+    }
+
+    public void fillField(String fieldTitle, String inputText) {
+        WebElement input = webDriver.findElement(By.xpath("//label[.='" + fieldTitle + "']/following::input"));
+        input.sendKeys(inputText);
     }
 
     @AfterMethod
@@ -104,10 +120,4 @@ public class Lesson18 {
             return false;
         }
     }
-
-    public void fillField(String fieldTitle, String inputText) {
-        WebElement input = webDriver.findElement(By.xpath("//label[.='" + fieldTitle + "']/following-sibling::input"));
-        input.sendKeys(inputText);
-    }
-
 }
