@@ -7,7 +7,7 @@ import org.openqa.selenium.By;
 public class TopMenu {
     @Step("Переход в меню {menuTitle}")
     public OverviewPage selectTopMenu(String menuTitle) {
-        Selenide.$(By.id(menuTitle)).click();
+        Selenide.$(By.id(menuTitle)).doubleClick();
         return new OverviewPage();
     }
 }

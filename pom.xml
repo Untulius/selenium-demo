@@ -17,6 +17,9 @@
         <webdrivermanager.version>3.8.0</webdrivermanager.version>
         <slf4j-log4j12.version>1.7.30</slf4j-log4j12.version>
         <aspectj.version>1.8.10</aspectj.version>
+        <cucumber-testng.version>5.6.0</cucumber-testng.version>
+        <cucumber-java.version>5.6.0</cucumber-java.version>
+        <allure-cucumber5-jvm.version>2.13.2</allure-cucumber5-jvm.version>
     </properties>
 
     <dependencies>
@@ -60,6 +63,23 @@
             <version>2.13.2</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <version>${cucumber-java.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-testng</artifactId>
+            <version>${cucumber-testng.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-cucumber5-jvm</artifactId>
+            <version>${allure-cucumber5-jvm.version}</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -75,8 +95,8 @@
                 <configuration>
                     <argLine>
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+                        -Dcucumber.options="--plugin io.qameta.allure.cucumber5jvm.AllureCucumber5Jvm"
                     </argLine>
-
                     <systemPropertyVariables>
                         <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
                     </systemPropertyVariables>
