@@ -34,7 +34,7 @@ public class Lesson21 {
     }
 
     @Test
-    public void lesson21() {
+    public void bspbRuPageFactoryTest() {
         LoginPagePF loginPagePF = new LoginPagePF(webDriver);
         loginPagePF
                 .login("demo", "demo")
@@ -42,17 +42,17 @@ public class Lesson21 {
                 .selectTopMenu("overview")
                 .moveCursor();
 
-        Assert.assertTrue(webDriver.getTitle().contains("Обзор"));
+        Assert.assertTrue(webDriver.getTitle().contains("Обзор"), "Наименование страницы не \"Обзор\"");
         OverviewPagePF overviewPagePF = new OverviewPagePF(webDriver);
-        Assert.assertEquals(overviewPagePF.getFinfreedom().getText(), "Финансовая свобода");
+        Assert.assertEquals(overviewPagePF.getFinfreedom().getText(), "Финансовая свобода", "Блок с текстом «Финансовая свобода» не отображается");
 
         String amountMoney = overviewPagePF.getAmount().getText();
-        Assert.assertTrue(amountMoney.matches("\\d{0,3}\\s\\d{0,3}\\s\\d{1,3}\\.\\d{2}\\s."));
+        Assert.assertTrue(amountMoney.matches("\\d{0,3}\\s\\d{0,3}\\s\\d{1,3}\\.\\d{2}\\s."), "Формат суммы отличен от “123 456 789.00 ₽”");
 
         String myAssets = overviewPagePF.getMyAssets().getText();
-        Assert.assertTrue(myAssets.contains("Моих средств"));
+        Assert.assertTrue(myAssets.contains("Моих средств"), "Отсутствует надпись \"Моих средств\"");
         String amountMyAssets = myAssets.replaceAll("Моих средств ", "");
-        Assert.assertTrue(amountMyAssets.matches("\\d{0,3}\\s\\d{0,3}\\s\\d{1,3}\\.\\d{2}\\s."));
+        Assert.assertTrue(amountMyAssets.matches("\\d{0,3}\\s\\d{0,3}\\s\\d{1,3}\\.\\d{2}\\s."), "Формат суммы отличен от “123 456 789.00 ₽”");
     }
 
     @AfterMethod

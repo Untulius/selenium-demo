@@ -3,8 +3,6 @@ package org.example;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -43,33 +41,31 @@ public class Lesson20 {
     }
 
     @Test
-    public void lesson20() {
+    public void bspbRuTest() {
         LoginPage loginPage = new LoginPage(webDriver);
         loginPage.login("demo", "demo");
+
         WebElement smsForm = webDriver.findElement(By.id("login-form"));
-        Assert.assertTrue(smsForm.isEnabled());
-
-
-        WebDriverWait webDriverWait = new WebDriverWait(webDriver, 30);
-        webDriverWait.until(ExpectedConditions.visibilityOf(smsForm));
+        Assert.assertTrue(smsForm.isEnabled(), "Форма смс-авторизации не активна");
         SmsPage smsPage = new SmsPage(webDriver);
         smsPage.enterCode("0000");
-        Assert.assertEquals(webDriver.getCurrentUrl(), "https://idemo.bspb.ru/welcome");
+        Assert.assertEquals(webDriver.getCurrentUrl(), "https://idemo.bspb.ru/welcome", "Вход в систему не осуществлен");
+
+        TopMenu topMenu = new TopMenu(webDriver);
+        topMenu.selectTopMenu("overview");
+        Assert.assertTrue(webDriver.getTitle().contains("Обзор"), "Наименование страницы не \"Обзор\"");
 
         OverviewPage overviewPage = new OverviewPage(webDriver);
-        overviewPage.getTopMenu().selectTopMenu("overview");
-
-        Assert.assertTrue(webDriver.getTitle().contains("Обзор"));
-        Assert.assertEquals(overviewPage.getFinfreedom().getText(), "Финансовая свобода");
+        Assert.assertEquals(overviewPage.getFinfreedom().getText(), "Финансовая свобода", "Блок с текстом «Финансовая свобода» не отображается");
 
         String amountMoney = overviewPage.getAmount().getText();
-        Assert.assertTrue(amountMoney.matches("\\d{0,3}\\s\\d{0,3}\\s\\d{1,3}\\.\\d{2}\\s."));
+        Assert.assertTrue(amountMoney.matches("\\d{0,3}\\s\\d{0,3}\\s\\d{1,3}\\.\\d{2}\\s."), "Формат суммы отличен от “123 456 789.00 ₽”");
 
         overviewPage.moveCursor();
         String myAssets = overviewPage.getMyAssets().getText();
-        Assert.assertTrue(myAssets.contains("Моих средств"));
+        Assert.assertTrue(myAssets.contains("Моих средств"), "Отсутствует надпись \"Моих средств\"");
         String amountMyAssets = myAssets.replaceAll("Моих средств ", "");
-        Assert.assertTrue(amountMyAssets.matches("\\d{0,3}\\s\\d{0,3}\\s\\d{1,3}\\.\\d{2}\\s."));
+        Assert.assertTrue(amountMyAssets.matches("\\d{0,3}\\s\\d{0,3}\\s\\d{1,3}\\.\\d{2}\\s."), "Формат суммы отличен от “123 456 789.00 ₽”");
     }
 
     @AfterMethod

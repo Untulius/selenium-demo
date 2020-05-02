@@ -20,19 +20,20 @@ import static com.codeborne.selenide.Selenide.$;
 методами с бизнес шагами аннотацию @Step
  */
 @Epic("https://idemo.bspb.ru")
-@Feature("Страница логина")
+@Feature("Тест сайта https://idemo.bspb.ru")
 public class Lesson23 {
 
     @BeforeMethod
     public void initDriver() {
         SelenideLogger.addListener("AllureSelenide", new AllureSelenide().screenshots(true).savePageSource(false));
         Configuration.timeout = 5_000;
+        Configuration.startMaximized = true;
         Selenide.open("https://idemo.bspb.ru");
 
     }
 
     @Story("Вход в систему")
-    @Description("Проверка входа в систему")
+    @Description("Негативный сценарий")
     @Owner("Victor Untulius")
     @Severity(SeverityLevel.CRITICAL)
     @Test
@@ -43,7 +44,7 @@ public class Lesson23 {
     }
 
     @Story("СМС-авторизация")
-    @Description("Проверка ввода СМС кода")
+    @Description("Проверка ввода неверного СМС кода")
     @Owner("Victor Untulius")
     @Severity(SeverityLevel.NORMAL)
     @Test
@@ -55,8 +56,10 @@ public class Lesson23 {
         $(withText("Неверный код")).shouldBe(Condition.visible);
     }
 
+    @Story("Вход в систему")
+    @Description("Позитивный сценарий")
     @Test
-    public void lesson23() {
+    public void bspbRuSelenideTest() {
 
         LoginPage loginPage = new LoginPage();
         loginPage
@@ -65,7 +68,7 @@ public class Lesson23 {
                 .selectTopMenu("overview")
                 .moveCursor();
 
-        Assert.assertTrue(Selenide.title().contains("Обзор"));
+        Assert.assertTrue(Selenide.title().contains("Обзор"), "Наименование страницы не \"Обзор\"");
         OverviewPage overviewPage = new OverviewPage();
         overviewPage.getFinfreedom().shouldHave(Condition.text("Финансовая свобода"));
         overviewPage.getAmount().should(Condition.matchText("\\d{0,3}\\s\\d{0,3}\\s\\d{1,3}\\.\\d{2}\\s."));

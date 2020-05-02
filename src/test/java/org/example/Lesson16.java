@@ -8,10 +8,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 import java.util.concurrent.TimeUnit;
 
@@ -39,50 +36,56 @@ public class Lesson16 {
         WebDriverManager.chromedriver().setup();
     }
 
-    @BeforeMethod
+    @BeforeClass
     public void initDriver() {
+        WebDriverManager.chromedriver().setup();
         webDriver = new ChromeDriver();
+        webDriver.get("https://savkk.github.io/selenium-practice/");
+        webDriver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
     }
 
     @Test
-    public void lesson16() {
-        webDriver.get("https://savkk.github.io/selenium-practice/");
-        webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+    public void buttonPageTest() {
         webDriver.findElement(By.id("button")).click();
         webDriver.findElement(By.id("first")).click();
 
         WebElement labelExcellent = webDriver.findElement(By.xpath("//label[.='Excellent!']"));
-        Assert.assertEquals(labelExcellent.getText(), "Excellent!");
+        Assert.assertEquals(labelExcellent.getText(), "Excellent!", "Не появился текст «Excellent!»");
 
         WebElement button = webDriver.findElement(By.className("button-primary"));
-        Assert.assertEquals(button.getAttribute("value"), "Click me too!");
+        Assert.assertEquals(button.getAttribute("value"), "Click me too!", "Не появилась кнопка \"Click me too!\"");
         button.click();
 
         WebElement link = webDriver.findElement(By.xpath("//a[.='Great! Return to menu']"));
-        Assert.assertEquals(link.getText(), "Great! Return to menu");
+        Assert.assertEquals(link.getText(), "Great! Return to menu", "Текст ссылки не “Great! Return to menu”");
         link.click();
+    }
 
+    @Test
+    public void checkBoxesPageTest() {
         webDriver.findElement(By.id("checkbox")).click();
 
         WebElement checkBoxOne = webDriver.findElement(By.id("one"));
         checkBoxOne.click();
         webDriver.findElement(By.id("go")).click();
         WebElement labelResult = webDriver.findElement(By.id("result"));
-        Assert.assertEquals(labelResult.getText(), checkBoxOne.getAttribute("value"));
+        Assert.assertEquals(labelResult.getText(), checkBoxOne.getAttribute("value"), "Текст не соответствует атрибуту value из выделенных чек-боксов");
 
         WebElement radioBoxThree = webDriver.findElement(By.id("radio_three"));
         radioBoxThree.click();
         webDriver.findElement(By.id("radio_go")).click();
         WebElement labelRadioResult = webDriver.findElement(By.id("radio_result"));
-        Assert.assertEquals(labelRadioResult.getText(), radioBoxThree.getAttribute("value"));
+        Assert.assertEquals(labelRadioResult.getText(), radioBoxThree.getAttribute("value"), "Текст не соответствует атрибуту value выделенной radio button");
 
         WebElement linkReturn = webDriver.findElement(By.xpath("//a[.='Great! Return to menu']"));
-        Assert.assertEquals(linkReturn.getText(), "Great! Return to menu");
+        Assert.assertEquals(linkReturn.getText(), "Great! Return to menu",  "Текст ссылки не “Great! Return to menu”");
         linkReturn.click();
     }
 
-    @AfterMethod
+    @AfterClass
     public void closeDriver() {
-        webDriver.quit();
+        if (webDriver != null) {
+            webDriver.quit();
+        }
     }
 }

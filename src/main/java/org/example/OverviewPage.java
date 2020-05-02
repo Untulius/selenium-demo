@@ -7,20 +7,21 @@ import org.openqa.selenium.interactions.Actions;
 
 import java.time.Duration;
 
-public class OverviewPage extends BasePage {
+public class OverviewPage {
+    private final WebDriver webDriver;
     private By amountField = By.xpath("//span[@class='amount']");
     private By finfreedom = By.xpath("//div[@id='header-container']//span[@class='text']");
     private By amount = By.xpath("//div[@id='header-container']//span[@class='amount']");
     private By myAssets = By.xpath("//div[@id='header-container']//small[@class='my-assets'][contains(text(),'Моих')]");
 
     public OverviewPage(WebDriver webDriver) {
-        super(webDriver);
+        this.webDriver = webDriver;
     }
 
     public void moveCursor() {
         Actions actions = new Actions(webDriver);
         WebElement amount = webDriver.findElement(amountField);
-        actions.moveToElement(amount).pause(Duration.ofSeconds(5)).build().perform();
+        actions.moveToElement(amount).pause(Duration.ofSeconds(2)).build().perform();
     }
 
     public WebElement getFinfreedom() {

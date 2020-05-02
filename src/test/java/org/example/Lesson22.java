@@ -19,7 +19,7 @@ public class Lesson22 {
     }
 
     @Test
-    public void lesson22() {
+    public void bspbRuSelenideTest() {
 
         LoginPage loginPage = new LoginPage();
         loginPage
@@ -28,7 +28,7 @@ public class Lesson22 {
                 .selectTopMenu("overview")
                 .moveCursor();
 
-        Assert.assertTrue(Selenide.title().contains("Обзор"));
+        Assert.assertTrue(Selenide.title().contains("Обзор"), "Наименование страницы не \"Обзор\"");
         OverviewPage overviewPage = new OverviewPage();
         overviewPage.getFinfreedom().shouldHave(Condition.text("Финансовая свобода"));
         overviewPage.getAmount().should(Condition.matchText("\\d{0,3}\\s\\d{0,3}\\s\\d{1,3}\\.\\d{2}\\s."));

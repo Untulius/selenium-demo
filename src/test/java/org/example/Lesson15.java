@@ -32,9 +32,9 @@ public class Lesson15 {
     }
 
     @Test
-    public void lesson15() {
+    public void yandexTest() {
         webDriver.get("https://yandex.ru/");
-        webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        webDriver.manage().timeouts().implicitlyWait(7, TimeUnit.SECONDS);
 
         WebElement input1 = webDriver.findElement(By.name("text"));
         input1.sendKeys("руддщ цкщдв");
@@ -43,9 +43,9 @@ public class Lesson15 {
         button.click();
 
         String inputText = webDriver.findElement(By.xpath("//span/input[@name='text']")).getAttribute("value");
-        Assert.assertEquals(inputText, "hello world");
+        Assert.assertEquals(inputText, "hello world", "Cтрока поиска не заполнена значением “hello world”");
 
-        Assert.assertTrue(webDriver.getTitle().contains("hello world"));
+        Assert.assertTrue(webDriver.getTitle().contains("hello world"), "Название окна браузера не содержит “hello world”");
     }
 
     @AfterMethod

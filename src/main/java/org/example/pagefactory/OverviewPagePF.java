@@ -4,10 +4,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 import java.time.Duration;
 
-public class OverviewPagePF extends BasePagePF {
+public class OverviewPagePF {
+    private final WebDriver webDriver;
 
     @FindBy(xpath = "//span[@class='amount']")
     private WebElement amountField;
@@ -22,12 +24,13 @@ public class OverviewPagePF extends BasePagePF {
     private WebElement myAssets;
 
     public OverviewPagePF(WebDriver webDriver) {
-        super(webDriver);
+        this.webDriver = webDriver;
+        PageFactory.initElements(webDriver, this);
     }
 
     public void moveCursor() {
         Actions actions = new Actions(webDriver);
-        actions.moveToElement(amountField).pause(Duration.ofSeconds(5)).build().perform();
+        actions.moveToElement(amountField).pause(Duration.ofSeconds(2)).build().perform();
     }
 
     public WebElement getFinfreedom() {
