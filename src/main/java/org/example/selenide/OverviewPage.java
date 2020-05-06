@@ -9,9 +9,6 @@ import static com.codeborne.selenide.Selenide.$;
 public class OverviewPage {
 
     private SelenideElement amountField = $(By.xpath("//span[@class='amount']"));
-    private SelenideElement finfreedom = $(By.xpath("//div[@id='header-container']//span[@class='text']"));
-    private SelenideElement amount = $(By.xpath("//div[@id='header-container']//span[@class='amount']"));
-    private SelenideElement myAssets = $(By.xpath("//div[@id='header-container']//small[@class='my-assets'][contains(text(),'Моих')]"));
 
     @Step("Наведение курсора")
     public void moveCursor() {
@@ -20,16 +17,16 @@ public class OverviewPage {
 
     @Step("Получение блока Финансоввая свобода")
     public SelenideElement getFinfreedom() {
-        return finfreedom;
+        return $(By.xpath("//div[@id='header-container']//span[@class='text']"));
     }
 
     @Step("Получение блока Сумма")
     public SelenideElement getAmount() {
-        return amount;
+        return $(By.xpath("//div[@id='header-container']//span[@class='amount']"));
     }
 
     @Step("Получение блока Моих средств")
     public SelenideElement getMyAssets() {
-        return myAssets;
+        return $(By.xpath("//div[@id='header-container']//small[@class='my-assets'][contains(text(),'Моих')]"));
     }
 }

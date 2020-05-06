@@ -9,10 +9,6 @@ import java.time.Duration;
 
 public class OverviewPage {
     private final WebDriver webDriver;
-    private By amountField = By.xpath("//span[@class='amount']");
-    private By finfreedom = By.xpath("//div[@id='header-container']//span[@class='text']");
-    private By amount = By.xpath("//div[@id='header-container']//span[@class='amount']");
-    private By myAssets = By.xpath("//div[@id='header-container']//small[@class='my-assets'][contains(text(),'Моих')]");
 
     public OverviewPage(WebDriver webDriver) {
         this.webDriver = webDriver;
@@ -20,19 +16,19 @@ public class OverviewPage {
 
     public void moveCursor() {
         Actions actions = new Actions(webDriver);
-        WebElement amount = webDriver.findElement(amountField);
+        WebElement amount = webDriver.findElement(By.xpath("//span[@class='amount']"));
         actions.moveToElement(amount).pause(Duration.ofSeconds(2)).build().perform();
     }
 
     public WebElement getFinfreedom() {
-        return webDriver.findElement(finfreedom);
+        return webDriver.findElement(By.xpath("//div[@id='header-container']//span[@class='text']"));
     }
 
     public WebElement getAmount() {
-        return webDriver.findElement(amount);
+        return webDriver.findElement(By.xpath("//div[@id='header-container']//span[@class='amount']"));
     }
 
     public WebElement getMyAssets() {
-        return webDriver.findElement(myAssets);
+        return webDriver.findElement(By.xpath("//div[@id='header-container']//small[@class='my-assets'][contains(text(),'Моих')]"));
     }
 }

@@ -44,12 +44,12 @@ public class Lesson21 {
 
         Assert.assertTrue(webDriver.getTitle().contains("Обзор"), "Наименование страницы не \"Обзор\"");
         OverviewPagePF overviewPagePF = new OverviewPagePF(webDriver);
-        Assert.assertEquals(overviewPagePF.getFinfreedom().getText(), "Финансовая свобода", "Блок с текстом «Финансовая свобода» не отображается");
+        Assert.assertEquals(overviewPagePF.finfreedom.getText(), "Финансовая свобода", "Блок с текстом «Финансовая свобода» не отображается");
 
-        String amountMoney = overviewPagePF.getAmount().getText();
+        String amountMoney = overviewPagePF.amount.getText();
         Assert.assertTrue(amountMoney.matches("\\d{0,3}\\s\\d{0,3}\\s\\d{1,3}\\.\\d{2}\\s."), "Формат суммы отличен от “123 456 789.00 ₽”");
 
-        String myAssets = overviewPagePF.getMyAssets().getText();
+        String myAssets = overviewPagePF.myAssets.getText();
         Assert.assertTrue(myAssets.contains("Моих средств"), "Отсутствует надпись \"Моих средств\"");
         String amountMyAssets = myAssets.replaceAll("Моих средств ", "");
         Assert.assertTrue(amountMyAssets.matches("\\d{0,3}\\s\\d{0,3}\\s\\d{1,3}\\.\\d{2}\\s."), "Формат суммы отличен от “123 456 789.00 ₽”");

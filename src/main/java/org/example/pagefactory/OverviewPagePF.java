@@ -12,16 +12,16 @@ public class OverviewPagePF {
     private final WebDriver webDriver;
 
     @FindBy(xpath = "//span[@class='amount']")
-    private WebElement amountField;
+    public WebElement amountField;
 
     @FindBy(xpath = "//div[@id='header-container']//span[@class='text']")
-    private WebElement finfreedom;
+    public WebElement finfreedom;
 
     @FindBy(xpath = "//div[@id='header-container']//span[@class='amount']")
-    private WebElement amount;
+    public WebElement amount;
 
     @FindBy(xpath = "//div[@id='header-container']//small[@class='my-assets'][contains(text(),'Моих')]")
-    private WebElement myAssets;
+    public WebElement myAssets;
 
     public OverviewPagePF(WebDriver webDriver) {
         this.webDriver = webDriver;
@@ -31,17 +31,5 @@ public class OverviewPagePF {
     public void moveCursor() {
         Actions actions = new Actions(webDriver);
         actions.moveToElement(amountField).pause(Duration.ofSeconds(2)).build().perform();
-    }
-
-    public WebElement getFinfreedom() {
-        return finfreedom;
-    }
-
-    public WebElement getAmount() {
-        return amount;
-    }
-
-    public WebElement getMyAssets() {
-        return myAssets;
     }
 }
